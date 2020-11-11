@@ -48,9 +48,14 @@ class Market
     complete_inventory
   end
 
-  def method_name
-
+  def overstocked_items
+    overstock = total_inventory.find_all do |item, info|
+      (total_inventory[item][:quantity] > 50) && (total_inventory[item][:vendors].count > 1)
+    end
+    items = overstock.map do |item|
+      item[0]
+    end
+    items
   end
-
 
 end

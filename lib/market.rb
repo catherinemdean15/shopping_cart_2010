@@ -38,6 +38,7 @@ class Market
         (inventory[item][:vendors] << vendor if inventory[item][:vendors]) ||
           (inventory[item][:vendors] = [vendor])
       end
+    end
     complete_inventory = Hash.new()
     vendors.each do |vendor|
       vendor.inventory.keys.each do |item|
@@ -45,6 +46,10 @@ class Market
       end
     end
     complete_inventory
+  end
+
+  def method_name
+
   end
 
 

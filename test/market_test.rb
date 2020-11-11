@@ -62,7 +62,6 @@ class MarketTest < Minitest::Test
   end
 
   def test_total_inventory
-    skip
     @vendor1.stock(@item1, 35)
     @vendor1.stock(@item2, 7)
     @vendor2.stock(@item4, 50)
@@ -130,6 +129,23 @@ class MarketTest < Minitest::Test
 
     assert_equal ["Banana Nice Cream", "Peach", "Peach-Raspberry Nice Cream", "Tomato"],
       @market.sorted_items_list
+  end
+
+  def test_sell
+    skip
+    @vendor1.stock(@item1, 35)
+    @vendor1.stock(@item2, 7)
+    @vendor2.stock(@item4, 50)
+    @vendor2.stock(@item3, 10)
+    @vendor3.stock(@item1, 65)
+
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
+
+    assert_equal true, @market.sell(@item1, 40)
+    assert_equal 0, @vendor1.check_stock(@item1)
+    assert_equal 60, @vendor3.check_stock(@item1)
   end
 
 end

@@ -29,28 +29,28 @@ class Market
     end.uniq
   end
 
-  def total_inventory
-    inventory = Hash.new({})
+  def all_items_info
+    item_and_info = {}
     all_items.each do |item|
-      @vendors.each do |vendor|
-        (inventory[item][:quantity] += vendor.check_stock(item) if inventory[item][:quantity]) ||
-          (inventory[item][:quantity] = vendor.check_stock(item))
-        (inventory[item][:vendors] << vendor if inventory[item][:vendors]) ||
-          (inventory[item][:vendors] = [vendor])
+      item_and_info[item] = {:quantity => 0, :vendors => []}
+    end
+    item_and_info
+  end
+
+  def total_inventory
+    inventory = all_items_info
+    @vendors.each do |vendor|
+      vendor.inventory.each do |item, amount|
+        inventory[item][:quantity] += amount
+        (inventory[item][:vendors] << vendor) if (amount > 0)
       end
     end
-    complete_inventory = Hash.new()
-    vendors.each do |vendor|
-      vendor.inventory.keys.each do |item|
-        complete_inventory[item] = inventory[item]
-      end
-    end
-    complete_inventory
+    inventory
   end
 
   def overstocked_items
     overstock = total_inventory.find_all do |item, info|
-      (total_inventory[item][:quantity] > 50) && (total_inventory[item][:vendors].count > 1)
+      (total_inventory[item][:quantity] > 50) && (total_inventory[item][:vendors][1])
     end
     items = overstock.map do |item|
       item[0]

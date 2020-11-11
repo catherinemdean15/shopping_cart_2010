@@ -17,5 +17,16 @@ class MarketTest < Minitest::Test
     @vendor3 = Vendor.new("Palisade Peach Shack")
   end
 
+  def test_it_exists
+    assert_instance_of Market, @market
+  end
+
+  def test_it_calls_name
+    assert_equal "South Pearl Street Farmers Market", @market.name
+  end
+
+  def test_it_has_vendors
+    assert_equal [], @market.vendors
+  end
 
 end

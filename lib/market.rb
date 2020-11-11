@@ -58,4 +58,10 @@ class Market
     items
   end
 
+  def sorted_items_list
+    all_items.map do |item|
+      item.name
+    end.sort
+  end
+
 end

@@ -61,4 +61,31 @@ class MarketTest < Minitest::Test
     assert_equal [@vendor2], @market.vendors_that_sell(@item4)
   end
 
+  def test_total_inventory
+    @vendor1.stock(@item1, 35)
+    @vendor1.stock(@item2, 7)
+    @vendor2.stock(@item4, 50)
+    @vendor2.stock(@item3, 10)
+    @vendor3.stock(@item1, 65)
+
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
+
+    expected = { @item1 => {quantity: 100,
+                            vendors: [@vendor1, @vendor3]
+                          },
+                 @item2 => {quantity: 7,
+                            vendors: [@vendor1]
+                          },
+                 @item4 => {quantity: 50,
+                            vendors: [@vendor2]
+                          },
+                 @item3 => {quantity: 35,
+                            vendors: [@vendor2, @vendor3]
+                            }
+    }
+    assert_equal expected, @market.total_inventory
+  end
+
 end

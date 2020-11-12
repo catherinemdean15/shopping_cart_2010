@@ -65,8 +65,9 @@ class MarketTest < Minitest::Test
     @vendor1.stock(@item1, 35)
     @vendor1.stock(@item2, 7)
     @vendor2.stock(@item4, 50)
-    @vendor2.stock(@item3, 10)
+    @vendor2.stock(@item3, 25)
     @vendor3.stock(@item1, 65)
+    @vendor3.stock(@item3, 10)
 
     @market.add_vendor(@vendor1)
     @market.add_vendor(@vendor2)
@@ -132,7 +133,6 @@ class MarketTest < Minitest::Test
   end
 
   def test_sell
-    skip
     @vendor1.stock(@item1, 35)
     @vendor1.stock(@item2, 7)
     @vendor2.stock(@item4, 50)
@@ -143,6 +143,7 @@ class MarketTest < Minitest::Test
     @market.add_vendor(@vendor2)
     @market.add_vendor(@vendor3)
 
+    assert_equal false, @market.sell(@item2, 10)
     assert_equal true, @market.sell(@item1, 40)
     assert_equal 0, @vendor1.check_stock(@item1)
     assert_equal 60, @vendor3.check_stock(@item1)
